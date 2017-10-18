@@ -2,7 +2,7 @@ package com.company;
 
 import java.util.ArrayList;;
 import java.util.LinkedList;
-/*测试ArrayList插入速度慢于linkedList by yaleitian
+/*测试ArrayList插入速度慢于linkedList by yaleitian   20171018
  */
 public class Main {
     public long startTime, endTime;
@@ -43,7 +43,6 @@ public class Main {
 //        System.out.println("Hello World");
 //        System.out.println(arr);
         Main main = new Main();
-//        main.start();
         main.getUsedTime();
     }
 }
