@@ -10,6 +10,7 @@ import java.util.List;
 public class DateUtil {
 
     private final static SimpleDateFormat shortSdf = new SimpleDateFormat("yyyy-MM-dd");
+    private final static SimpleDateFormat shortYear = new SimpleDateFormat("yyyy");
     private final static SimpleDateFormat longHourSdf = new SimpleDateFormat("yyyy-MM-dd HH");
     private final static SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
     private final static SimpleDateFormat longSdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
@@ -477,6 +478,27 @@ public class DateUtil {
     }
 
     /**
+     * 属于当前季度的前一季度的年份
+     *
+     * @return
+     */
+    public static String getYear(Date date) throws ParseException {
+        int month = getYearMonthIndex(date);
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(date);
+        String year = null;
+        if (month <= 3) {
+            calendar.add(Calendar.YEAR,-1);
+            year = shortYear.format(calendar.getTime());
+        } else {
+            calendar.add(Calendar.YEAR,0);
+            year = shortYear.format(calendar.getTime());
+        }
+        return year;
+
+    }
+
+    /**
      * 当前属于本年第几个季度
      *
      * @return
@@ -628,8 +650,11 @@ public class DateUtil {
     /**
      * 测试
      */
-    private static void test() {
+    private static void test() throws ParseException {
         Date date = new Date();
+
+        System.out.println("当前季度开始：" + shortSdf.format(getQuarterStartTime(date)));
+        System.out.println("当前季度结束：" + getQuarterEndTime(date));
         System.out.println("当前小时开始：" + toStr(null, getHourStartTime(date)));
         System.out.println("当前小时结束：" + toStr(null, getHourEndTime(date)));
         System.out.println("当前天开始：" + toStr(null, getDayStartTime(date)));
@@ -649,6 +674,7 @@ public class DateUtil {
         System.out.println("当前属于本年第：" + getYearWeekIndex(date) + "周");
         System.out.println("当前属于本年第：" + getYearMonthIndex(date) + "月");
         System.out.println("当前属于本年第：" + getYeartQuarterIndex(date) + "季度");
+        System.out.println("当前属于：" + getYear(date));
         System.out.println("时间转换(yyyy)： " + toStr(null, toDate("2018")));
         System.out.println("时间转换(yyyy-MM)： " + toStr(null, toDate("2018-01")));
         System.out.println("时间转换(yyyy-MM-dd)： " + toStr(null, toDate("2018-01-01")));
@@ -727,7 +753,7 @@ public class DateUtil {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws ParseException {
         test();
         testYearDayList();
         testYearWeekList();
